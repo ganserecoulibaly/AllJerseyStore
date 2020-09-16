@@ -5,18 +5,20 @@ import 'package:grouped_buttons/grouped_buttons.dart';
 //import 'package:flutter_sms/flutter_sms.dart';
 import 'dart:async';
 import 'package:sms/sms.dart';
+import 'livraison/livraison.dart';
 
 
 class BodyItem extends StatefulWidget {
 
-  //final Product product;
   final String url_img;
   final String equipe;
   final String origine;
   final String annee;
+  final String prix;
+  String taille;
 
 
-  const BodyItem({Key key, this.url_img,this.equipe, this.origine,this.annee}) : super(key: key);
+   BodyItem({Key key, this.url_img,this.equipe, this.origine,this.annee, this.prix, this.taille}) : super(key: key);
 
   @override
   _BodyItemState createState() => _BodyItemState();
@@ -50,26 +52,49 @@ class _BodyItemState extends State<BodyItem> {
                   ),
                   SizedBox(height: 50.0),
                   Image.network( widget.url_img),
-                  SizedBox(height: 40),
-                  RadioButtonGroup(
-                        labels: <String>[
-                          "S",
-                          "L",
-                          "M",
-                          "XL",
-                        ],
-                        orientation: GroupedButtonsOrientation.HORIZONTAL,
-                        padding: EdgeInsets.only(left: 90.0),
-                        onSelected: (String selected) => print(selected)
-                    ),
-                  SizedBox(height: 40),
+                  SizedBox(height: 20),
+                  Text("Taille"),
+                  DropdownButton<String>(
+                    items: [
+                      DropdownMenuItem<String>(
+                        child: Text('S'),
+                        value: 'S',
+                      ),
+                      DropdownMenuItem<String>(
+                        child: Text('M'),
+                        value: 'M',
+                      ),
+                      DropdownMenuItem<String>(
+                        child: Text('L'),
+                        value: 'L',
+                      ),
+                      DropdownMenuItem<String>(
+                        child: Text('XL'),
+                        value: 'XL',
+                      ),
+                    ],
+                    onChanged: (String value) {
+                      setState(() {
+                        print("TAILLE CHOISI : " + value);
+                        widget.taille = value;
+                      });
+                    },
+                    hint: Text('Select Item'),
+                    value: widget.taille,
+                  ),
+                  SizedBox(height: 30),
                   Text(
-                    "20 euros",
+                    widget.prix + "€",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(color: Colors.black),
                   ),
                   SizedBox(height: 40),
                   FloatingActionButton(onPressed:  () {
+                    Navigator.push(context, new MaterialPageRoute(
+                        builder: (context) =>
+                        new livraison(widget.equipe, widget.origine, widget.annee, widget.prix, widget.url_img, widget.taille)
+
+                    ));
                       //_sendSMS("bonjour test sms", "0033695458762");
                       //go to informations livraisons and payment screen
                    },

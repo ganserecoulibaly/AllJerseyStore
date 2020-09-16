@@ -15,7 +15,8 @@ class ListBundes {
   ListBundes({this.equipe,
     this.origine,
     this.url_img,
-    this.annee,});
+    this.annee,
+    this.prix});
 
   factory ListBundes.fromJson(Map<String, dynamic> json) {
     return ListBundes(
@@ -23,6 +24,7 @@ class ListBundes {
       origine: json['origine'],
       url_img: json['url_img'],
       annee: json['annee'],
+      prix: json['prix'],
     );
   }
 }
@@ -62,17 +64,17 @@ class ListBundesView extends StatelessWidget {
     return ListView.builder(
         itemCount: data.length,
         itemBuilder: (context, index) {
-          return _tile(context,data[index].url_img,data[index].equipe, data[index].origine,data[index].annee);
+          return _tile(context,data[index].url_img,data[index].equipe, data[index].origine,data[index].annee,data[index].prix);
         });
   }
 
-  ListTile _tile(context,String url_img,String equipe,String origine,String annee) => ListTile(
+  ListTile _tile(context,String url_img,String equipe,String origine,String annee, String prix) => ListTile(
     title: Text(equipe,
         style: TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: 20,
         )),
-    subtitle: Text(origine),
+    subtitle: Text(origine + " / " + "Saison " + annee + " | " + prix + "€"),
     leading: Image.network(
       url_img,
       //width: double.infinity,
@@ -83,7 +85,7 @@ class ListBundesView extends StatelessWidget {
     onTap: () {
       Navigator.push(context, new MaterialPageRoute(
           builder: (context) =>
-          new BodyItem(url_img: url_img,equipe: equipe,origine: origine,annee: annee)
+          new BodyItem(url_img: url_img,equipe: equipe,origine: origine,annee: annee, prix: prix)
       ));
     }
     ,
